@@ -30,20 +30,16 @@ const tradeSchema = new mongoose.Schema({
 
 const Trade = mongoose.model('Trade', tradeSchema);
 
-// Configure Multer for file upload
 const upload = multer({ dest: 'uploads/' });
 
-// Endpoint to upload and parse the CSV file
 app.post('/upload-csv', upload.single('file'), (req, res) => {
     if (!req.file) {
       return res.status(400).send('No file uploaded.');
     }
   
-    // Process the uploaded file
     const results = [];
     const buffer = req.file.buffer; // Access the file buffer
   
-    // Use buffer to parse CSV
     const readableStream = require('stream').Readable.from(buffer);
     readableStream
       .pipe(csv())
@@ -70,7 +66,6 @@ app.post('/upload-csv', upload.single('file'), (req, res) => {
       });
   });
   
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
